@@ -1,12 +1,24 @@
 import React, { useState, useEffect } from "react";
 import pet, { ANIMALS } from "@frontendmasters/pet";
-import useDropdown from "./useDropdown";
+import useDropdown from "./useDropdown.jsx";
 
 const SearchParams = () => {
   const [location, updateLocation] = useState("Seattle, WA");
   const [breeds, updateBreeds] = useState([]);
   const [animal, AnimalDropdown] = useDropdown("Animal", "dog", ANIMALS);
   const [breed, BreedDropdown, updateBreed] = useDropdown("Breed", "", breeds);
+  const [pets, setPets] = useState([]);
+
+  async function requestPets() {
+    const { animals } = await pet.animals({
+      location,
+      breed,
+      type: animal
+    });
+
+    // either all the animals or nothing for not found
+    setPets(animals || []);
+  }
 
   useEffect(() => {
     updateBreeds([]);
@@ -19,7 +31,13 @@ const SearchParams = () => {
 
   return (
     <div className="search-params">
-      <form>
+      <form
+        onSubmit={e => {
+          e.preventDefault();
+          // get the pets from the API on submit
+          requestPets();
+        }}
+      >
         <label htmlFor="location">
           Location
           <input
