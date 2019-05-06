@@ -17,7 +17,7 @@ class Carousel extends React.Component {
       photos = media.map(({ large }) => large);
     }
     // return what we want to be merged into the state (on this component)
-    return photos;
+    return { photos };
   }
 
   // arrow function so we have the right this
