@@ -20,6 +20,16 @@ class Carousel extends React.Component {
     return photos;
   }
 
+  // arrow function so we have the right this
+  // this is a state prop also which is great!
+  // always do this on event listeners and functions you pass to children
+  handleClickIndex = event => {
+    this.setState({
+      // unary operator here makes a string a number yummy
+      active: +event.target.dataset.index
+    });
+  };
+
   render() {
     const { photos, active } = this.state;
 
